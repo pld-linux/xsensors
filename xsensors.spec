@@ -1,5 +1,5 @@
 Summary:	Display all related information from motherboard sensors
-Summary(pl):	Program, który wy¶wietla informacje z czujników p³yty g³ównej
+Summary(pl):	Program wy¶wietlaj±cy informacje z czujników p³yty g³ównej
 Name:		xsensors
 Version:	0.50
 Release:	1
@@ -23,7 +23,7 @@ information from motherboard sensors.
 
 %description -l pl
 Jest to program napisany przy u¿yciu GTK+2 s³u¿±cy do wy¶wietlania
-informacji na temat stanu p³yty g³ownej.
+informacji z czujników p³yty g³ównej.
 
 %prep
 %setup -q
