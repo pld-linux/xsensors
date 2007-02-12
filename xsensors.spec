@@ -1,5 +1,5 @@
 Summary:	Display all related information from motherboard sensors
-Summary(pl):	Program wy秝ietlaj眂y informacje z czujnik體 p硑ty g丑wnej
+Summary(pl.UTF-8):   Program wy艣wietlaj膮cy informacje z czujnik贸w p艂yty g艂贸wnej
 Name:		xsensors
 Version:	0.50
 Release:	1
@@ -21,9 +21,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Xsensors is a GTK+2 program designed to display all the related
 information from motherboard sensors.
 
-%description -l pl
-Jest to program napisany przy u縴ciu GTK+2 s硊勘cy do wy秝ietlania
-informacji z czujnik體 p硑ty g丑wnej.
+%description -l pl.UTF-8
+Jest to program napisany przy u偶yciu GTK+2 s艂u偶膮cy do wy艣wietlania
+informacji z czujnik贸w p艂yty g艂贸wnej.
 
 %prep
 %setup -q
