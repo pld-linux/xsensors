@@ -1,5 +1,5 @@
 Summary:	Display all related information from motherboard sensors
-Summary(pl.UTF-8):   Program wyświetlający informacje z czujników płyty głównej
+Summary(pl.UTF-8):	Program wyświetlający informacje z czujników płyty głównej
 Name:		xsensors
 Version:	0.50
 Release:	1
