@@ -1,12 +1,12 @@
 Summary:	Display all related information from motherboard sensors
 Summary(pl.UTF-8):	Program wyświetlający informacje z czujników płyty głównej
 Name:		xsensors
-Version:	0.50
+Version:	0.60
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://www.linuxhardware.org/xsensors/%{name}-%{version}.tar.gz
-# Source0-md5:	3c80057bf8cc2d2f9803a496e7bc6e78
+# Source0-md5:	4f218896a79fc9cc765ff2d9eaa3d362
 URL:		http://www.linuxhardware.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
