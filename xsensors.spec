@@ -1,13 +1,18 @@
-Summary:	Display all related information from motherboard sensors
+Summary:	Display all related information from motherboard sme}ensors
 Summary(pl.UTF-8):	Program wyświetlający informacje z czujników płyty głównej
 Name:		xsensors
-Version:	0.60
+Version:	0.70
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://www.linuxhardware.org/xsensors/%{name}-%{version}.tar.gz
-# Source0-md5:	4f218896a79fc9cc765ff2d9eaa3d362
+# Source0-md5:	4f8fb83cfd03c0cc34967a73c6021531
 URL:		http://www.linuxhardware.org/
+Patch0:		%{name}-cleanup-allocs.patch
+Patch1:		%{name}-remove-unused-variables.patch
+Patch2:		%{name}-replace-deprecated-gtk.patch
+Patch3:		%{name}-select-chip.patch
+Patch4:		%{name}-support-multiple-chips-on-cmd.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gtk+2-devel >= 2:2.6.0
@@ -27,6 +32,11 @@ informacji z czujników płyty głównej.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 %build
 %{__libtoolize}
