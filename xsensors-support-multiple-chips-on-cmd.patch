@@ -1,0 +1,112 @@
+--- a/src/gui.c
++++ b/src/gui.c
+@@ -176,6 +176,15 @@
+     return SUCCESS;
+ }
+ 
++/* Find the tail of a non-NULL linked list. */
++static updates *llist_tail( updates *node ) {
++
++    if ( node->next == NULL )
++        return node;
++    else
++        return llist_tail( node->next );
++}
++
+ /* Update the sensor information. */
+ gint update_sensor_data( gpointer data ) {
+     updates *updata = data;
+@@ -427,19 +436,54 @@
+     return head;
+ }
+ 
++static updates *add_sensor_chips( GtkWidget *notebook, const char *pattern ) {
++    const sensors_chip_name *name = NULL, *pquery = NULL;
++    sensors_chip_name query;
++
++    updates *head = NULL, *tail = NULL, *new_nodes;
++
++    int chipnum = 0;
++
++    if ( pattern ) {
++        if ( sensors_parse_chip_name( pattern, &query ) ) {
++            fprintf( stderr,
++                    "Couldn't parse chip name %s!  Exiting!\n",
++                    pattern );
++            return NULL;
++        }
++        pquery = &query;
++    }
++
++    while ( ( name = sensors_get_detected_chips( pquery, &chipnum ) ) != NULL ) {
++#ifdef DEBUG_XSENSORS
++        printf( "Adding tab for %s\n", name->prefix );
++#endif
++        if ( ( new_nodes = add_sensor_tab( notebook, name ) ) == NULL )
++            return head;
++
++        update_sensor_data( new_nodes );
++        g_signal_connect( G_OBJECT (mainwindow), "realize",
++                          G_CALLBACK (start_timer), new_nodes );
++
++        if ( head == NULL )
++            head = new_nodes;
++        else
++            tail->next = new_nodes;
++        tail = llist_tail( new_nodes );
++    }
++
++    return head;
++}
++
+ int start_gui( int argc, char **argv ) {
+     struct stat sbuf;
+     char *title = NULL;
+-    int errone;
++    int i, errone;
+ 
+     GtkWidget *notebook = NULL;
+     
+     updates *head = NULL;
+ 
+-    int chipnum = 0;
+-    const sensors_chip_name *name = NULL, *pquery = NULL;
+-    sensors_chip_name query;
+-
+     gtk_init( &argc, &argv );
+ 
+     if ( ( title = g_malloc( 15 * sizeof( char ) ) ) == NULL ) {
+@@ -504,26 +548,15 @@
+     gtk_container_add( GTK_CONTAINER (mainwindow), notebook );
+ 
+     if ( argc >= 2 ) {
+-        if ( sensors_parse_chip_name( argv[1], &query ) ) {
+-            fprintf( stderr,
+-                    "Couldn't parse chip name!  Exiting!\n" );
+-            exit( 1 );
+-        }
+-        pquery = &query;
+-    }
+-
+-    while ( ( name = sensors_get_detected_chips( pquery, &chipnum ) ) != NULL ) {
+-        if ( 1 ) {
+-#ifdef DEBUG_XSENSORS
+-            printf( "Adding tab for %s\n", name->prefix );
+-#endif
+-            if ( ( head = add_sensor_tab( notebook, name ) ) == NULL )
++        for ( i = 1; i < argc; i++ ) {
++            head = add_sensor_chips( notebook, argv[i] );
++            if ( head == NULL )
+                 return FAILURE;
+-            
+-            update_sensor_data( head );
+-            g_signal_connect( G_OBJECT (mainwindow), "realize",
+-                              G_CALLBACK (start_timer), head );
+         }
++    } else {
++        head = add_sensor_chips( notebook, NULL );
++        if ( head == NULL )
++            return FAILURE;
+     }
+     
+     /* Setup the main components. */
