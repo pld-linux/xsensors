@@ -1,0 +1,30 @@
+--- a/src/gui.c
++++ b/src/gui.c
+@@ -437,7 +437,8 @@
+     updates *head = NULL;
+ 
+     int chipnum = 0;
+-    const sensors_chip_name *name = NULL;
++    const sensors_chip_name *name = NULL, *pquery = NULL;
++    sensors_chip_name query;
+ 
+     gtk_init( &argc, &argv );
+ 
+@@ -502,7 +503,16 @@
+ 
+     gtk_container_add( GTK_CONTAINER (mainwindow), notebook );
+ 
+-    while ( ( name = sensors_get_detected_chips( NULL, &chipnum ) ) != NULL ) {
++    if ( argc >= 2 ) {
++        if ( sensors_parse_chip_name( argv[1], &query ) ) {
++            fprintf( stderr,
++                    "Couldn't parse chip name!  Exiting!\n" );
++            exit( 1 );
++        }
++        pquery = &query;
++    }
++
++    while ( ( name = sensors_get_detected_chips( pquery, &chipnum ) ) != NULL ) {
+         if ( 1 ) {
+ #ifdef DEBUG_XSENSORS
+             printf( "Adding tab for %s\n", name->prefix );
